@@ -352,6 +352,8 @@
   </div>
 </header>
 
+<div id="aviso-bolao"></div>
+
 <!-- SETUP BANNER -->
 <div class="setup-banner" id="setupBanner">
   <div class="setup-box">
@@ -425,6 +427,9 @@
 // Se quiser fixar a API key e o BIN ID diretamente no arquivo, preencha aqui:
 const HARDCODED_API_KEY = '$2a$10$TIwVvMo0Z4vv5WNbPA68wOfquqE4EgkT5YIOOWDa/yyg62ntx49LG';   // ex: '$2a$10$...'
 const HARDCODED_BIN_ID  = '6a1f4ae7f5f4af5e29af5ed2';   // ex: '6849abc...'  (preenchido automaticamente após criar o bin)
+
+const DATA_LIMITE = new Date('2026-06-10T23:59:59');
+function bloqueado(){ return new Date() > DATA_LIMITE; }
 // ─────────────────────────────────────────────────────────
 
 const GAMES = [
@@ -603,6 +608,10 @@ function setPalpite(name, gid, side, val){
 }
 
 async function savePalpiteGame(gid){
+  if (bloqueado()) {
+    showToast('Os palpites já foram encerrados.', true);
+    return;
+  }
   const btn = document.getElementById('sbtn-'+gid);
   btn.classList.add('saving'); btn.textContent = 'Salvando...';
   await pushData();
@@ -823,8 +832,29 @@ function showToast(msg, isErr=false){
   setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
+
+function renderAviso(){
+  const div = document.getElementById('aviso-bolao');
+  if(!div) return;
+
+  if(bloqueado()){
+    div.innerHTML = `
+      <div style="background:#e03131;color:white;text-align:center;padding:12px;font-weight:bold">
+        🔒 Palpites encerrados em 10/06/2026
+      </div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div style="background:#F5C518;color:#000;text-align:center;padding:12px;font-weight:bold">
+        ⏳ Os palpites podem ser alterados até 10/06/2026 às 23:59
+      </div>
+    `;
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────
 (async function init(){
+  renderAviso();
   if(apiKey && binId){
     document.getElementById('setupBanner').style.display = 'none';
     await syncData();
