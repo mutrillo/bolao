@@ -351,6 +351,7 @@
     <div style="font-size:52px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))">🏆</div>
   </div>
 </header>
+<div id="aviso-bolao"></div>
 
 <!-- SETUP BANNER -->
 <div class="setup-banner" id="setupBanner">
@@ -453,6 +454,22 @@ let syncing = false;
 const ADMIN_PASSWORD = 'BolaoFamilia2026';
 const urlParams = new URLSearchParams(window.location.search);
 const isAdmin = urlParams.get('admin') === ADMIN_PASSWORD;
+
+const DATA_LIMITE = new Date('2026-06-10T23:59:59');
+
+function bloqueado(){
+  return new Date() > DATA_LIMITE;
+}
+
+function renderAviso(){
+  const div = document.getElementById('aviso-bolao');
+  if(!div) return;
+
+  div.innerHTML = bloqueado()
+    ? '<div style="background:#e03131;color:#fff;text-align:center;padding:12px;font-weight:bold;margin-bottom:10px">🔒 Palpites encerrados em 10/06/2026</div>'
+    : '<div style="background:#F5C518;color:#000;text-align:center;padding:12px;font-weight:bold;margin-bottom:10px">⏳ Os palpites podem ser alterados até 10/06/2026 às 23:59</div>';
+}
+
 
 // ── JSONBIN API ───────────────────────────────────────────
 const BASE = 'https://api.jsonbin.io/v3';
@@ -607,6 +624,8 @@ function setPalpite(name, gid, side, val){
 }
 
 async function savePalpiteGame(gid){
+  if(bloqueado()){ showToast('Os palpites já foram encerrados.', true); return; }
+
   const btn = document.getElementById('sbtn-'+gid);
   btn.classList.add('saving'); btn.textContent = 'Salvando...';
   await pushData();
@@ -843,6 +862,7 @@ function showToast(msg, isErr=false){
 
 // ── INIT ──────────────────────────────────────────────────
 (async function init(){
+  renderAviso();
   if(isAdmin){
     const admTab = document.getElementById('adminTab');
     if(admTab) admTab.style.display='';
