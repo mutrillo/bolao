@@ -352,8 +352,6 @@
   </div>
 </header>
 
-<div id="aviso-bolao"></div>
-
 <!-- SETUP BANNER -->
 <div class="setup-banner" id="setupBanner">
   <div class="setup-box">
@@ -411,7 +409,7 @@
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('palpites',this)">🎯 Palpites</button>
-    <button class="tab" onclick="switchTab('resultados',this)">⚽ Resultados</button>
+    <button id="adminTab" class="tab" onclick="switchTab('resultados',this)" style="display:none">⚽ Resultados</button>
     <button class="tab" onclick="switchTab('placar',this)">🏅 Placar Geral</button>
   </div>
 
@@ -427,9 +425,6 @@
 // Se quiser fixar a API key e o BIN ID diretamente no arquivo, preencha aqui:
 const HARDCODED_API_KEY = '$2a$10$TIwVvMo0Z4vv5WNbPA68wOfquqE4EgkT5YIOOWDa/yyg62ntx49LG';   // ex: '$2a$10$...'
 const HARDCODED_BIN_ID  = '6a1f4ae7f5f4af5e29af5ed2';   // ex: '6849abc...'  (preenchido automaticamente após criar o bin)
-
-const DATA_LIMITE = new Date('2026-06-10T23:59:59');
-function bloqueado(){ return new Date() > DATA_LIMITE; }
 // ─────────────────────────────────────────────────────────
 
 const GAMES = [
@@ -454,6 +449,10 @@ let binId  = HARDCODED_BIN_ID  || localStorage.getItem('bolao_binid')  || '';
 let currentParticipant = localStorage.getItem('bolao_me') || null;
 let remoteData = { participants:[], palpites:{}, results:{} };
 let syncing = false;
+
+const ADMIN_PASSWORD = 'BolaoFamilia2026';
+const urlParams = new URLSearchParams(window.location.search);
+const isAdmin = urlParams.get('admin') === ADMIN_PASSWORD;
 
 // ── JSONBIN API ───────────────────────────────────────────
 const BASE = 'https://api.jsonbin.io/v3';
@@ -608,10 +607,6 @@ function setPalpite(name, gid, side, val){
 }
 
 async function savePalpiteGame(gid){
-  if (bloqueado()) {
-    showToast('Os palpites já foram encerrados.', true);
-    return;
-  }
   const btn = document.getElementById('sbtn-'+gid);
   btn.classList.add('saving'); btn.textContent = 'Salvando...';
   await pushData();
@@ -710,6 +705,10 @@ function setResult(gid, side, val){
 }
 
 async function saveResultGame(gid){
+  if(!isAdmin){
+    showToast('Acesso negado', true);
+    return;
+  }
   const btn = document.getElementById('rbtn-'+gid);
   btn.classList.add('saving'); btn.textContent='Salvando...';
   await pushData();
@@ -771,33 +770,25 @@ function renderResultados(){
 function outcome(h,a){ return h>a?'H':a>h?'A':'E'; }
 
 function calcScore(name){
-  let pts = 0;
-  let ex = 0;
-  let cr = 0;
+  let pts=0, ex=0, cr=0;
+  GAMES.forEach(g=>{
+    const res=remoteData.results[g.id];
+    const pal=remoteData.palpites[name]?.[g.id];
 
-  GAMES.forEach(g => {
+    if(!res||res.h==null||res.a==null) return;
+    if(!pal||pal.h==null||pal.a==null) return;
 
-    const res = remoteData.results[g.id];
-    const pal = remoteData.palpites[name]?.[g.id];
-
-    if(!res || res.h == null || res.a == null) return;
-    if(!pal || pal.h == null || pal.a == null) return;
-
-    // Acertou resultado (vitória/empate/derrota)
-    if(outcome(pal.h,pal.a) === outcome(res.h,res.a)){
+    if(outcome(pal.h,pal.a)===outcome(res.h,res.a)){
       pts += 1;
       cr++;
     }
 
-    // Acertou placar exato
-    if(pal.h === res.h && pal.a === res.a){
+    if(pal.h===res.h && pal.a===res.a){
       pts += 3;
       ex++;
     }
-
   });
-
-  return {pts, ex, cr};
+  return {pts,ex,cr};
 }
 
 function renderPlacar(){
@@ -850,29 +841,12 @@ function showToast(msg, isErr=false){
   setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
-
-function renderAviso(){
-  const div = document.getElementById('aviso-bolao');
-  if(!div) return;
-
-  if(bloqueado()){
-    div.innerHTML = `
-      <div style="background:#e03131;color:white;text-align:center;padding:12px;font-weight:bold">
-        🔒 Palpites encerrados em 10/06/2026
-      </div>
-    `;
-  } else {
-    div.innerHTML = `
-      <div style="background:#F5C518;color:#000;text-align:center;padding:12px;font-weight:bold">
-        ⏳ Os palpites podem ser alterados até 10/06/2026 às 23:59
-      </div>
-    `;
-  }
-}
-
 // ── INIT ──────────────────────────────────────────────────
 (async function init(){
-  renderAviso();
+  if(isAdmin){
+    const admTab = document.getElementById('adminTab');
+    if(admTab) admTab.style.display='';
+  }
   if(apiKey && binId){
     document.getElementById('setupBanner').style.display = 'none';
     await syncData();
