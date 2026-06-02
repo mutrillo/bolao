@@ -431,11 +431,16 @@
 
 <div class="toast" id="toast"></div>
 
+  <div class="main">
+  <div id="aviso-prazo" class="aviso-prazo"></div> 
+</div>
+  
 <script>
 // ── CONFIG ────────────────────────────────────────────────
 // Se quiser fixar a API key e o BIN ID diretamente no arquivo, preencha aqui:
 const HARDCODED_API_KEY = '$2a$10$TIwVvMo0Z4vv5WNbPA68wOfquqE4EgkT5YIOOWDa/yyg62ntx49LG';   // ex: '$2a$10$...'
 const HARDCODED_BIN_ID  = '6a1f4ae7f5f4af5e29af5ed2';   // ex: '6849abc...'  (preenchido automaticamente após criar o bin)
+const DATA_LIMITE = new Date("2026-06-10T12:00:00").getTime();
 // ─────────────────────────────────────────────────────────
 
 const GAMES = [
