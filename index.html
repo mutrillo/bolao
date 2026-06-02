@@ -771,15 +771,33 @@ function renderResultados(){
 function outcome(h,a){ return h>a?'H':a>h?'A':'E'; }
 
 function calcScore(name){
-  let pts=0, ex=0, cr=0;
-  GAMES.forEach(g=>{
-    const res=remoteData.results[g.id]; const pal=remoteData.palpites[name]?.[g.id];
-    if(!res||res.h==null||res.a==null) return;
-    if(!pal||pal.h==null||pal.a==null) return;
-    if(pal.h===res.h&&pal.a===res.a){ pts+=3; ex++; }
-    else if(outcome(pal.h,pal.a)===outcome(res.h,res.a)){ pts+=1; cr++; }
+  let pts = 0;
+  let ex = 0;
+  let cr = 0;
+
+  GAMES.forEach(g => {
+
+    const res = remoteData.results[g.id];
+    const pal = remoteData.palpites[name]?.[g.id];
+
+    if(!res || res.h == null || res.a == null) return;
+    if(!pal || pal.h == null || pal.a == null) return;
+
+    // Acertou resultado (vitória/empate/derrota)
+    if(outcome(pal.h,pal.a) === outcome(res.h,res.a)){
+      pts += 1;
+      cr++;
+    }
+
+    // Acertou placar exato
+    if(pal.h === res.h && pal.a === res.a){
+      pts += 3;
+      ex++;
+    }
+
   });
-  return{pts,ex,cr};
+
+  return {pts, ex, cr};
 }
 
 function renderPlacar(){
