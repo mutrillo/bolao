@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Copa 2026 🇧🇷</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5C518;
+    --green: #009c3b;
+    --green-dark: #007a2e;
+    --blue: #002776;
+    --red: #e03131;
+    --bg: #0a0f1e;
+    --bg2: #111827;
+    --bg3: #1a2235;
+    --card: #1e2d45;
+    --border: #2a3f5f;
+    --text: #e8edf5;
+    --muted: #7a8aa0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(0,156,59,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(0,39,118,0.2) 0%, transparent 60%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--blue) 0%, #001a5c 40%, var(--green-dark) 100%);
+    border-bottom: 3px solid var(--gold);
+    position: relative; overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 40px,
+      rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px);
+  }
+  .header-inner {
+    max-width: 860px; margin: 0 auto;
+    padding: 28px 24px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; flex-wrap: wrap; gap: 12px;
+  }
+  .header-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .header-eyebrow::before { content: '▶'; font-size: 9px; }
+  h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(34px, 6vw, 58px); letter-spacing: 2px; line-height: 1;
+    color: white; text-shadow: 0 2px 20px rgba(245,197,24,0.3);
+  }
+  h1 span { color: var(--gold); }
+  .header-meta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 6px; letter-spacing: 1px;
+  }
+
+  /* ── SETUP BANNER ── */
+  .setup-banner {
+    max-width: 860px; margin: 20px auto 0; padding: 0 20px;
+  }
+  .setup-box {
+    background: rgba(245,197,24,0.08);
+    border: 1.5px dashed rgba(245,197,24,0.4);
+    border-radius: 12px; padding: 16px 20px;
+  }
+  .setup-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .setup-box h3::before { content: '⚙️'; font-size: 14px; }
+  .setup-steps { display: flex; flex-direction: column; gap: 6px; }
+  .setup-step {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; color: var(--text);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .step-num {
+    background: var(--gold); color: var(--bg);
+    font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .setup-key-row { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .key-input {
+    flex: 1; min-width: 200px;
+    background: var(--bg3); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 9px 14px;
+    color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+    outline: none; transition: border-color .2s;
+  }
+  .key-input:focus { border-color: var(--gold); }
+  .btn-gold {
+    background: var(--gold); color: var(--bg);
+    border: none; border-radius: 8px; padding: 9px 20px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700;
+    letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: opacity .2s;
+  }
+  .btn-gold:hover { opacity: .85; }
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 16px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: #4a6080; }
+  .setup-note {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+    color: var(--muted); margin-top: 8px; line-height: 1.5;
+  }
+  .setup-note a { color: var(--gold); }
+  .api-status {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+    padding: 6px 12px; border-radius: 6px; margin-top: 8px; display: none;
+  }
+  .api-status.ok { background: rgba(0,156,59,.15); color: #6dffaa; display: block; }
+  .api-status.err { background: rgba(224,49,49,.15); color: #ff8888; display: block; }
+
+  /* ── PARTICIPANTS ── */
+  .section-wrap { max-width: 860px; margin: 20px auto 0; padding: 0 20px; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+  .participants-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .participant-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 100px; padding: 7px 14px 7px 8px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all .2s; position: relative;
+  }
+  .participant-chip:hover { border-color: var(--gold); background: #253350; }
+  .participant-chip.active { border-color: var(--gold); background: rgba(245,197,24,.1); box-shadow: 0 0 0 1px var(--gold); }
+  .p-avatar { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; flex-shrink: 0; }
+  .remove-btn {
+    display: none; position: absolute; right: -6px; top: -6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--red); color: white; font-size: 11px;
+    align-items: center; justify-content: center;
+    cursor: pointer; border: none; line-height: 1;
+  }
+  .participant-chip:hover .remove-btn { display: flex; }
+  .add-participant {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent; border: 1.5px dashed var(--border);
+    border-radius: 100px; padding: 7px 16px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600;
+    color: var(--muted); cursor: pointer; transition: all .2s;
+  }
+  .add-participant:hover { border-color: var(--gold); color: var(--gold); }
+  .add-form { display: none; gap: 6px; align-items: center; }
+  .add-form.visible { display: flex; }
+  .add-input {
+    background: var(--bg3); border: 1.5px solid var(--border);
+    border-radius: 100px; padding: 7px 14px;
+    color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+    width: 160px; outline: none;
+  }
+  .add-input:focus { border-color: var(--gold); }
+
+  /* ── MAIN ── */
+  .main { max-width: 860px; margin: 28px auto 60px; padding: 0 20px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 28px; flex-wrap: wrap; }
+  .tab {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700;
+    letter-spacing: 1.5px; padding: 9px 20px; border-radius: 7px;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    cursor: pointer; transition: all .2s; text-transform: uppercase;
+  }
+  .tab:hover { color: var(--text); border-color: #4a6080; }
+  .tab.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+  /* ── GAME CARDS ── */
+  .games-stack { display: flex; flex-direction: column; gap: 16px; }
+  .game-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
+  .game-card:hover { border-color: #3a5a80; }
+  .game-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 18px; flex-wrap: wrap; gap: 6px;
+    background: linear-gradient(135deg, rgba(0,39,118,.6), rgba(0,30,80,.4));
+    border-bottom: 1px solid var(--border);
+  }
+  .game-round {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .game-round::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: inline-block; }
+  .game-datetime { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: rgba(255,255,255,.5); display: flex; align-items: center; gap: 10px; }
+  .game-stadium { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: rgba(255,255,255,.35); margin-left: auto; }
+  .game-pitch { padding: 22px 20px 20px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+  .team-block { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .team-flag { font-size: 44px; line-height: 1; }
+  .team-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; line-height: 1.2; }
+  .team-name.brasil { color: var(--gold); }
+  .team-confed { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .score-center { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .vs-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .score-inputs { display: flex; align-items: center; gap: 6px; }
+  .score-input {
+    width: 52px; height: 52px; text-align: center;
+    background: var(--bg2); border: 2px solid var(--border);
+    border-radius: 10px; color: var(--gold);
+    font-family: 'Bebas Neue', cursive; font-size: 28px; outline: none;
+    transition: border-color .2s, background .2s;
+    appearance: textfield; -moz-appearance: textfield;
+  }
+  .score-input::-webkit-outer-spin-button, .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-input:focus { border-color: var(--gold); background: #1a2540; }
+  .score-input.filled { border-color: var(--green); background: rgba(0,156,59,.08); }
+  .score-sep { font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--muted); }
+
+  /* save btn per game */
+  .save-game-btn {
+    background: var(--bg3); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 6px 18px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 1px; color: var(--muted); cursor: pointer; transition: all .2s;
+    white-space: nowrap;
+  }
+  .save-game-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .save-game-btn.saved { border-color: var(--green); color: #6dffaa; background: rgba(0,156,59,.1); }
+  .save-game-btn.saving { opacity: .6; cursor: wait; }
+
+  .others-palpites {
+    border-top: 1px solid var(--border); padding: 10px 18px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    background: rgba(0,0,0,.15);
+  }
+  .others-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+  .other-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 100px; padding: 4px 12px 4px 6px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600;
+  }
+  .mini-avatar { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; flex-shrink: 0; }
+  .mini-score { color: var(--gold); }
+
+  /* resultado real */
+  .result-row {
+    border-top: 1px solid var(--border); padding: 10px 18px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    background: rgba(0,100,30,.07);
+  }
+  .result-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+  .result-inputs { display: flex; align-items: center; gap: 6px; }
+  .result-input {
+    width: 40px; height: 32px; text-align: center;
+    background: rgba(0,156,59,.1); border: 1.5px solid rgba(0,156,59,.35);
+    border-radius: 7px; color: #6dffaa;
+    font-family: 'Bebas Neue', cursive; font-size: 20px; outline: none;
+    appearance: textfield; -moz-appearance: textfield; transition: border-color .2s;
+  }
+  .result-input::-webkit-outer-spin-button, .result-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .result-input:focus { border-color: var(--green); }
+  .result-sep { color: var(--muted); font-size: 14px; }
+
+  /* ── RANKING ── */
+  .ranking-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
+  .ranking-header {
+    background: linear-gradient(135deg, var(--green-dark), #004d1a);
+    padding: 18px 22px; border-bottom: 2px solid var(--gold);
+    font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 2px; color: var(--gold);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ranking-row {
+    display: grid; grid-template-columns: 46px 1fr 70px 70px 80px;
+    align-items: center; padding: 14px 22px;
+    border-bottom: 1px solid rgba(42,63,95,.4); gap: 10px;
+  }
+  .ranking-row:last-child { border-bottom: none; }
+  .ranking-row:hover { background: rgba(255,255,255,.025); }
+  .ranking-row.hdr {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); padding: 10px 22px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,.2);
+  }
+  .rank-pos { font-family: 'Bebas Neue', cursive; font-size: 24px; color: var(--muted); text-align: center; }
+  .rank-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .rank-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+  .rank-stat { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+  .rank-pts { text-align: center; font-family: 'Bebas Neue', cursive; font-size: 30px; color: var(--gold); }
+  .pts-label { display: block; font-size: 10px; letter-spacing: 1px; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-weight: 400; text-transform: uppercase; }
+
+  .info-box { background: rgba(245,197,24,.06); border: 1px solid rgba(245,197,24,.18); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .info-box h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .scoring-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .scoring-pill { background: rgba(0,0,0,.2); border: 1px solid rgba(245,197,24,.18); border-radius: 100px; padding: 5px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+  .scoring-pill strong { color: var(--gold); }
+
+  .progress-bar-wrap { height: 4px; background: var(--bg3); border-radius: 100px; margin: 8px 0 4px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(to right, var(--gold), var(--green)); border-radius: 100px; transition: width .5s; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state h2 { font-family: 'Bebas Neue', cursive; font-size: 32px; letter-spacing: 2px; margin-bottom: 8px; color: #3a5270; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green); color: white;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px;
+    padding: 12px 26px; border-radius: 100px;
+    opacity: 0; pointer-events: none; transition: all .3s; z-index: 999; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.err { background: var(--red); }
+
+  .sync-bar { display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--muted); margin-bottom: 16px; flex-wrap: wrap; justify-content: space-between; }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .sync-dot.off { background: var(--red); animation: none; }
+  .sync-dot.loading { background: var(--gold); }
+  .btn-refresh { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--muted); cursor: pointer; transition: all .2s; }
+  .btn-refresh:hover { color: var(--text); border-color: #4a6080; }
+
+  @media (max-width:540px) {
+    .ranking-row { grid-template-columns: 36px 1fr 60px 70px; }
+    .ranking-row .rank-stat:nth-child(3), .ranking-row.hdr span:nth-child(3) { display: none; }
+    .game-pitch { padding: 16px 12px; }
+    .team-flag { font-size: 34px; }
+    .score-input { width: 44px; height: 44px; font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-eyebrow">Copa do Mundo FIFA 2026 · Grupo C</div>
+      <h1>BOLÃO <span>DA FAMÍLIA</span></h1>
+      <div class="header-meta">🇧🇷 BRASIL · MARROCOS · HAITI · ESCÓCIA</div>
+    </div>
+    <div style="font-size:52px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))">🏆</div>
+  </div>
+</header>
+
+<!-- SETUP BANNER -->
+<div class="setup-banner" id="setupBanner">
+  <div class="setup-box">
+    <h3>Configuração inicial — faça isso uma vez só</h3>
+    <div class="setup-steps">
+      <div class="setup-step">
+        <div class="step-num">1</div>
+        <span>Acesse <a href="https://jsonbin.io" target="_blank" style="color:var(--gold)">jsonbin.io</a> e crie uma conta gratuita</span>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">2</div>
+        <span>No painel, vá em <strong>API Keys</strong> → crie uma chave e copie</span>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">3</div>
+        <span>Cole a chave abaixo e clique em Conectar</span>
+      </div>
+    </div>
+    <div class="setup-key-row">
+      <input class="key-input" id="apiKeyInput" type="password" placeholder="Cole sua API Key do JSONBin aqui...">
+      <button class="btn-gold" onclick="conectar()">Conectar</button>
+      <button class="btn-ghost" onclick="document.getElementById('setupBanner').style.display='none'">Fechar</button>
+    </div>
+    <div class="setup-note">
+      A chave fica salva no seu navegador (localStorage). Plano gratuito do JSONBin suporta até 10.000 requisições/mês — mais que suficiente para o bolão.
+    </div>
+    <div class="api-status" id="apiStatus"></div>
+  </div>
+</div>
+
+<!-- PARTICIPANTES -->
+<div class="section-wrap" style="margin-top:24px">
+  <div class="section-label">Participantes</div>
+  <div class="participants-bar" id="participantsBar">
+    <button class="add-participant" id="btnAdd" onclick="showAddForm()">
+      <span style="font-size:18px">＋</span> Adicionar participante
+    </button>
+    <div class="add-form" id="addForm">
+      <input class="add-input" id="newNameInput" placeholder="Nome..." maxlength="18" onkeydown="handleKey(event)">
+      <button class="btn-gold" style="border-radius:100px;padding:7px 16px;font-size:14px" onclick="addParticipant()">OK</button>
+      <button onclick="hideAddForm()" style="background:transparent;border:none;color:var(--muted);font-size:18px;cursor:pointer">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="sync-bar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncLabel">Conectando...</span>
+    </div>
+    <button class="btn-refresh" onclick="syncData(true)">↻ Atualizar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('palpites',this)">🎯 Palpites</button>
+    <button class="tab" onclick="switchTab('resultados',this)">⚽ Resultados</button>
+    <button class="tab" onclick="switchTab('placar',this)">🏅 Placar Geral</button>
+  </div>
+
+  <div id="tab-palpites"><div id="palpitesContent"></div></div>
+  <div id="tab-resultados" style="display:none"><div id="resultadosContent"></div></div>
+  <div id="tab-placar" style="display:none"><div id="placarContent"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+// Se quiser fixar a API key e o BIN ID diretamente no arquivo, preencha aqui:
+const HARDCODED_API_KEY = '';   // ex: '$2a$10$...'
+const HARDCODED_BIN_ID  = '';   // ex: '6849abc...'  (preenchido automaticamente após criar o bin)
+// ─────────────────────────────────────────────────────────
+
+const GAMES = [
+  { id:'g1', round:1, date:'Sáb, 13 de junho', time:'19h00',
+    home:{n:'Brasil',f:'🇧🇷',conf:'CONMEBOL',br:true}, away:{n:'Marrocos',f:'🇲🇦',conf:'CAF'},
+    stadium:'MetLife Stadium · Nova York/NJ' },
+  { id:'g2', round:2, date:'Sex, 19 de junho', time:'21h30',
+    home:{n:'Brasil',f:'🇧🇷',conf:'CONMEBOL',br:true}, away:{n:'Haiti',f:'🇭🇹',conf:'CONCACAF'},
+    stadium:'Lincoln Financial Field · Filadélfia' },
+  { id:'g3', round:3, date:'Qua, 24 de junho', time:'21h00',
+    home:{n:'Escócia',f:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',conf:'UEFA'}, away:{n:'Brasil',f:'🇧🇷',conf:'CONMEBOL',br:true},
+    stadium:'Hard Rock Stadium · Miami' }
+];
+
+const COLORS = ['#e63946','#2a9d8f','#e9c46a','#457b9d','#8338ec','#fb5607','#3a86ff','#06d6a0','#ef476f','#ffd166','#118ab2'];
+function ini(n){ return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function col(n){ let h=0; for(let c of n) h=(h*31+c.charCodeAt(0))&0xffff; return COLORS[h%COLORS.length]; }
+
+// ── STATE ─────────────────────────────────────────────────
+let apiKey = HARDCODED_API_KEY || localStorage.getItem('bolao_apikey') || '';
+let binId  = HARDCODED_BIN_ID  || localStorage.getItem('bolao_binid')  || '';
+let currentParticipant = localStorage.getItem('bolao_me') || null;
+let remoteData = { participants:[], palpites:{}, results:{} };
+let syncing = false;
+
+// ── JSONBIN API ───────────────────────────────────────────
+const BASE = 'https://api.jsonbin.io/v3';
+
+async function createBin(data){
+  const r = await fetch(`${BASE}/b`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','X-Master-Key':apiKey,'X-Bin-Private':'false','X-Bin-Name':'bolao-copa-2026'},
+    body: JSON.stringify(data)
+  });
+  if(!r.ok) throw new Error(await r.text());
+  const j = await r.json();
+  return j.metadata.id;
+}
+
+async function readBin(){
+  const r = await fetch(`${BASE}/b/${binId}/latest`, {
+    headers:{'X-Master-Key':apiKey}
+  });
+  if(!r.ok) throw new Error(await r.text());
+  const j = await r.json();
+  return j.record;
+}
+
+async function writeBin(data){
+  const r = await fetch(`${BASE}/b/${binId}`, {
+    method:'PUT',
+    headers:{'Content-Type':'application/json','X-Master-Key':apiKey},
+    body: JSON.stringify(data)
+  });
+  if(!r.ok) throw new Error(await r.text());
+}
+
+// ── CONECTAR ──────────────────────────────────────────────
+async function conectar(){
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if(!key){ setApiStatus('err','Cole a API Key primeiro.'); return; }
+  apiKey = key;
+  setApiStatus('loading','Conectando...');
+  try{
+    if(!binId){
+      // Criar bin novo
+      const data = { participants:[], palpites:{}, results:{} };
+      binId = await createBin(data);
+      localStorage.setItem('bolao_binid', binId);
+      remoteData = data;
+    } else {
+      remoteData = await readBin();
+    }
+    localStorage.setItem('bolao_apikey', apiKey);
+    setApiStatus('ok', `✅ Conectado! Bin ID: ${binId} — guarde esse ID para compartilhar com a família.`);
+    document.getElementById('setupBanner').style.display = 'none';
+    setSyncOk();
+    renderAll();
+    showToast('Bolão conectado! 🎉');
+  } catch(e){
+    setApiStatus('err','Erro: ' + e.message);
+  }
+}
+
+function setApiStatus(type, msg){
+  const el = document.getElementById('apiStatus');
+  el.className = 'api-status ' + (type==='loading'?'ok':type);
+  el.textContent = msg;
+}
+
+// ── SYNC ──────────────────────────────────────────────────
+async function syncData(manual=false){
+  if(!apiKey || !binId){ setSyncOff(); return; }
+  if(syncing) return;
+  syncing = true;
+  setSyncLoading();
+  try{
+    remoteData = await readBin();
+    setSyncOk();
+    renderAll();
+    if(manual) showToast('Atualizado! ✓');
+  } catch(e){
+    setSyncOff();
+    if(manual) showToast('Erro ao sincronizar', true);
+  }
+  syncing = false;
+}
+
+async function pushData(){
+  if(!apiKey || !binId) return;
+  try{ await writeBin(remoteData); setSyncOk(); }
+  catch(e){ setSyncOff(); showToast('Erro ao salvar', true); }
+}
+
+function setSyncOk(){ document.getElementById('syncDot').className='sync-dot'; document.getElementById('syncLabel').textContent='Sincronizado'; }
+function setSyncOff(){ document.getElementById('syncDot').className='sync-dot off'; document.getElementById('syncLabel').textContent='Sem conexão — verifique a API Key'; }
+function setSyncLoading(){ document.getElementById('syncDot').className='sync-dot loading'; document.getElementById('syncLabel').textContent='Sincronizando...'; }
+
+// ── PARTICIPANTS ──────────────────────────────────────────
+function renderParticipants(){
+  const bar = document.getElementById('participantsBar');
+  bar.querySelectorAll('.participant-chip').forEach(e=>e.remove());
+  const btn = document.getElementById('btnAdd');
+  remoteData.participants.forEach(p => {
+    const c = col(p); const chip = document.createElement('div');
+    chip.className = 'participant-chip' + (currentParticipant===p?' active':'');
+    chip.innerHTML = `<div class="p-avatar" style="background:${c}">${ini(p)}</div>${p}
+      <button class="remove-btn" onclick="removeParticipant('${p}',event)">✕</button>`;
+    chip.onclick = e => { if(!e.target.classList.contains('remove-btn')) selectParticipant(p); };
+    bar.insertBefore(chip, btn);
+  });
+}
+
+function selectParticipant(name){
+  currentParticipant = name;
+  localStorage.setItem('bolao_me', name);
+  renderParticipants();
+  renderPalpites();
+}
+
+function showAddForm(){ document.getElementById('btnAdd').style.display='none'; document.getElementById('addForm').classList.add('visible'); document.getElementById('newNameInput').focus(); }
+function hideAddForm(){ document.getElementById('btnAdd').style.display=''; document.getElementById('addForm').classList.remove('visible'); document.getElementById('newNameInput').value=''; }
+function handleKey(e){ if(e.key==='Enter') addParticipant(); if(e.key==='Escape') hideAddForm(); }
+
+async function addParticipant(){
+  const name = document.getElementById('newNameInput').value.trim();
+  if(!name) return;
+  if(remoteData.participants.includes(name)){ showToast('Nome já existe!', true); return; }
+  remoteData.participants.push(name);
+  currentParticipant = name;
+  localStorage.setItem('bolao_me', name);
+  await pushData();
+  hideAddForm();
+  renderParticipants();
+  renderPalpites();
+  renderPlacar();
+  showToast(`${name} entrou no bolão! 🎉`);
+}
+
+async function removeParticipant(name, e){
+  e.stopPropagation();
+  remoteData.participants = remoteData.participants.filter(p=>p!==name);
+  delete remoteData.palpites[name];
+  if(currentParticipant===name){ currentParticipant = remoteData.participants[0]||null; localStorage.setItem('bolao_me', currentParticipant||''); }
+  await pushData();
+  renderParticipants(); renderPalpites(); renderPlacar();
+}
+
+// ── PALPITES ──────────────────────────────────────────────
+function setPalpite(name, gid, side, val){
+  if(!remoteData.palpites[name]) remoteData.palpites[name]={};
+  if(!remoteData.palpites[name][gid]) remoteData.palpites[name][gid]={};
+  remoteData.palpites[name][gid][side] = val===''?null:parseInt(val);
+  const el = document.getElementById(`pi-${gid}-${side}`);
+  if(el) el.classList.toggle('filled', val!=='');
+}
+
+async function savePalpiteGame(gid){
+  const btn = document.getElementById('sbtn-'+gid);
+  btn.classList.add('saving'); btn.textContent = 'Salvando...';
+  await pushData();
+  btn.classList.remove('saving'); btn.classList.add('saved'); btn.textContent = '✓ Salvo!';
+  setTimeout(()=>{ btn.classList.remove('saved'); btn.textContent = '💾 Salvar palpite'; }, 2500);
+  renderPlacar();
+  // re-render to show others if any
+  const others = document.getElementById('others-'+gid);
+  if(others) renderOthers(gid, others);
+}
+
+function renderOthers(gid, container){
+  const name = currentParticipant;
+  const others = remoteData.participants.filter(p=>p!==name).map(p=>{
+    const op = remoteData.palpites[p]?.[gid];
+    if(op?.h!=null && op?.a!=null) return {name:p,h:op.h,a:op.a};
+    return null;
+  }).filter(Boolean);
+  if(!others.length){ container.style.display='none'; return; }
+  container.style.display='flex';
+  container.innerHTML = `<span class="others-label">Outros palpites</span>` +
+    others.map(o=>`<div class="other-pill"><div class="mini-avatar" style="background:${col(o.name)}">${ini(o.name)}</div><span>${o.name}</span><span class="mini-score">&nbsp;${o.h}×${o.a}</span></div>`).join('');
+}
+
+function renderPalpites(){
+  const container = document.getElementById('palpitesContent');
+  if(!remoteData.participants.length){
+    container.innerHTML=`<div class="empty-state"><h2>NENHUM PARTICIPANTE</h2><p>Adicione os participantes do bolão acima para começar!</p></div>`; return;
+  }
+  if(!currentParticipant){
+    container.innerHTML=`<div class="empty-state"><h2>SELECIONE UM PARTICIPANTE</h2><p>Clique no nome de quem vai palpitar.</p></div>`; return;
+  }
+  const name = currentParticipant;
+  const done = GAMES.filter(g=>{ const p=remoteData.palpites[name]?.[g.id]; return p?.h!=null&&p?.a!=null; }).length;
+  const pct = Math.round(done/GAMES.length*100);
+
+  let html = `<div style="margin-bottom:22px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px">
+        PALPITES DE <strong style="color:${col(name)}">${name.toUpperCase()}</strong>
+      </span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--gold)">${done}/${GAMES.length} jogos</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+  </div><div class="games-stack">`;
+
+  GAMES.forEach(game => {
+    const pal = remoteData.palpites[name]?.[game.id]||{};
+    const hv = pal.h!=null?pal.h:''; const av = pal.a!=null?pal.a:'';
+    const others = remoteData.participants.filter(p=>p!==name).map(p=>{
+      const op=remoteData.palpites[p]?.[game.id]; if(op?.h!=null&&op?.a!=null) return{name:p,h:op.h,a:op.a}; return null;
+    }).filter(Boolean);
+
+    html += `<div class="game-card">
+      <div class="game-card-header">
+        <div class="game-round">RODADA ${game.round} · GRUPO C</div>
+        <div class="game-datetime"><span>📅 ${game.date}</span><span>🕐 ${game.time} (Brasília)</span></div>
+        <div class="game-stadium">📍 ${game.stadium}</div>
+      </div>
+      <div class="game-pitch">
+        <div class="team-block">
+          <div class="team-flag">${game.home.f}</div>
+          <div class="team-name${game.home.br?' brasil':''}">${game.home.n}</div>
+          <div class="team-confed">${game.home.conf}</div>
+        </div>
+        <div class="score-center">
+          <div class="vs-label">Palpite</div>
+          <div class="score-inputs">
+            <input class="score-input${hv!==''?' filled':''}" id="pi-${game.id}-h" type="number" min="0" max="20" value="${hv}" placeholder="–"
+              oninput="setPalpite('${name}','${game.id}','h',this.value)">
+            <span class="score-sep">×</span>
+            <input class="score-input${av!==''?' filled':''}" id="pi-${game.id}-a" type="number" min="0" max="20" value="${av}" placeholder="–"
+              oninput="setPalpite('${name}','${game.id}','a',this.value)">
+          </div>
+          <button class="save-game-btn" id="sbtn-${game.id}" onclick="savePalpiteGame('${game.id}')">💾 Salvar palpite</button>
+        </div>
+        <div class="team-block">
+          <div class="team-flag">${game.away.f}</div>
+          <div class="team-name${game.away.br?' brasil':''}">${game.away.n}</div>
+          <div class="team-confed">${game.away.conf}</div>
+        </div>
+      </div>
+      <div class="others-palpites" id="others-${game.id}" style="${others.length?'':'display:none'}">
+        ${others.length?`<span class="others-label">Outros palpites</span>`+others.map(o=>`<div class="other-pill"><div class="mini-avatar" style="background:${col(o.name)}">${ini(o.name)}</div><span>${o.name}</span><span class="mini-score">&nbsp;${o.h}×${o.a}</span></div>`).join(''):''}
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// ── RESULTADOS ────────────────────────────────────────────
+function setResult(gid, side, val){
+  if(!remoteData.results[gid]) remoteData.results[gid]={};
+  remoteData.results[gid][side] = val===''?null:parseInt(val);
+}
+
+async function saveResultGame(gid){
+  const btn = document.getElementById('rbtn-'+gid);
+  btn.classList.add('saving'); btn.textContent='Salvando...';
+  await pushData();
+  btn.classList.remove('saving'); btn.classList.add('saved'); btn.textContent='✓ Resultado salvo!';
+  setTimeout(()=>{ btn.classList.remove('saved'); btn.textContent='💾 Salvar resultado'; }, 2500);
+  renderPlacar();
+}
+
+function renderResultados(){
+  const container = document.getElementById('resultadosContent');
+  const done = GAMES.filter(g=>{ const r=remoteData.results[g.id]; return r?.h!=null&&r?.a!=null; }).length;
+  let html = `<div class="info-box"><h3>Resultados Reais</h3>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:10px">Insira o placar real de cada jogo para calcular a pontuação automaticamente.</p>
+    <div class="scoring-pills">
+      <div class="scoring-pill"><strong>+3 pts</strong> Placar exato</div>
+      <div class="scoring-pill"><strong>+1 pt</strong> Resultado certo (V/E/D)</div>
+      <div class="scoring-pill"><strong>0 pts</strong> Errou</div>
+    </div></div>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);letter-spacing:1px">RESULTADOS INSERIDOS</span>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--green)">${done}/${GAMES.length}</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${Math.round(done/GAMES.length*100)}%;background:linear-gradient(to right,var(--green),#6dffaa)"></div></div>
+    </div>
+    <div class="games-stack">`;
+
+  GAMES.forEach(game => {
+    const res = remoteData.results[game.id]||{};
+    const hv=res.h!=null?res.h:''; const av=res.a!=null?res.a:'';
+    html += `<div class="game-card">
+      <div class="game-card-header">
+        <div class="game-round">RODADA ${game.round} · GRUPO C</div>
+        <div class="game-datetime"><span>📅 ${game.date}</span><span>🕐 ${game.time} (Brasília)</span></div>
+        <div class="game-stadium">📍 ${game.stadium}</div>
+      </div>
+      <div class="game-pitch">
+        <div class="team-block"><div class="team-flag">${game.home.f}</div><div class="team-name${game.home.br?' brasil':''}">${game.home.n}</div></div>
+        <div class="score-center">
+          <div class="vs-label">Resultado final</div>
+          <div class="result-inputs">
+            <input class="result-input" type="number" min="0" max="20" value="${hv}" placeholder="–"
+              oninput="setResult('${game.id}','h',this.value)">
+            <span class="result-sep">×</span>
+            <input class="result-input" type="number" min="0" max="20" value="${av}" placeholder="–"
+              oninput="setResult('${game.id}','a',this.value)">
+          </div>
+          <button class="save-game-btn" id="rbtn-${game.id}" onclick="saveResultGame('${game.id}')">💾 Salvar resultado</button>
+        </div>
+        <div class="team-block"><div class="team-flag">${game.away.f}</div><div class="team-name${game.away.br?' brasil':''}">${game.away.n}</div></div>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// ── SCORING ───────────────────────────────────────────────
+function outcome(h,a){ return h>a?'H':a>h?'A':'E'; }
+
+function calcScore(name){
+  let pts=0, ex=0, cr=0;
+  GAMES.forEach(g=>{
+    const res=remoteData.results[g.id]; const pal=remoteData.palpites[name]?.[g.id];
+    if(!res||res.h==null||res.a==null) return;
+    if(!pal||pal.h==null||pal.a==null) return;
+    if(pal.h===res.h&&pal.a===res.a){ pts+=3; ex++; }
+    else if(outcome(pal.h,pal.a)===outcome(res.h,res.a)){ pts+=1; cr++; }
+  });
+  return{pts,ex,cr};
+}
+
+function renderPlacar(){
+  const container = document.getElementById('placarContent');
+  if(!remoteData.participants.length){
+    container.innerHTML=`<div class="empty-state"><h2>SEM PARTICIPANTES</h2><p>Adicione participantes para ver o placar.</p></div>`; return;
+  }
+  const scores = remoteData.participants.map(p=>({name:p,...calcScore(p)}))
+    .sort((a,b)=>b.pts-a.pts||b.ex-a.ex||b.cr-a.cr);
+  const medals = ['🥇','🥈','🥉'];
+  let html = `<div class="ranking-card">
+    <div class="ranking-header">🏅 CLASSIFICAÇÃO GERAL</div>
+    <div class="ranking-row hdr"><span>#</span><span>PARTICIPANTE</span><span style="text-align:center">EXATOS</span><span style="text-align:center">RESULT.</span><span style="text-align:center">PONTOS</span></div>`;
+
+  scores.forEach((s,i) => {
+    html += `<div class="ranking-row" style="${i===0?'background:rgba(245,197,24,.05)':''}">
+      <div class="rank-pos">${medals[i]||(i+1)}</div>
+      <div class="rank-name"><div class="rank-avatar" style="background:${col(s.name)}">${ini(s.name)}</div>${s.name}</div>
+      <div class="rank-stat">${s.ex}<span class="pts-label">exatos</span></div>
+      <div class="rank-stat">${s.cr}<span class="pts-label">result.</span></div>
+      <div class="rank-pts">${s.pts}<span class="pts-label">pts</span></div>
+    </div>`;
+  });
+  html += `</div>
+    <div class="info-box"><h3>Pontuação</h3><div class="scoring-pills">
+      <div class="scoring-pill"><strong>+3 pts</strong> Placar exato</div>
+      <div class="scoring-pill"><strong>+1 pt</strong> Resultado certo (V/E/D)</div>
+    </div></div>`;
+  container.innerHTML = html;
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['palpites','resultados','placar'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display = t===tab?'':'none';
+  });
+  if(tab==='resultados') renderResultados();
+  if(tab==='placar') renderPlacar();
+}
+
+function renderAll(){ renderParticipants(); renderPalpites(); renderPlacar(); }
+
+// ── TOAST ─────────────────────────────────────────────────
+function showToast(msg, isErr=false){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast' + (isErr?' err':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ── INIT ──────────────────────────────────────────────────
+(async function init(){
+  if(apiKey && binId){
+    document.getElementById('setupBanner').style.display = 'none';
+    await syncData();
+  } else {
+    setSyncOff();
+    document.getElementById('apiKeyInput').value = apiKey;
+  }
+  renderAll();
+  // Auto-sync a cada 20 segundos
+  setInterval(()=>syncData(), 20000);
+})();
+</script>
+</body>
+</html>
