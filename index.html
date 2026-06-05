@@ -156,7 +156,7 @@
     align-items: center; justify-content: center;
     cursor: pointer; border: none; line-height: 1;
   }
-  .participant-chip:hover .remove-btn { display: flex; }
+  .is-admin .participant-chip:hover .remove-btn { display: flex; }
   .add-participant {
     display: flex; align-items: center; gap: 8px;
     background: transparent; border: 1.5px dashed var(--border);
@@ -225,6 +225,7 @@
   .score-input::-webkit-outer-spin-button, .score-input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .score-input:focus { border-color: var(--gold); background: #1a2540; }
   .score-input.filled { border-color: var(--green); background: rgba(0,156,59,.08); }
+  .score-input:disabled { opacity: 0.45; cursor: not-allowed; border-color: var(--border); }
   .score-sep { font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--muted); }
 
   /* save btn per game */
@@ -607,6 +608,7 @@ async function addParticipant(){
 
 async function removeParticipant(name, e){
   e.stopPropagation();
+  if(!isAdmin){ showToast('Só o admin pode remover participantes.', true); return; }
   remoteData.participants = remoteData.participants.filter(p=>p!==name);
   delete remoteData.palpites[name];
   if(currentParticipant===name){ currentParticipant = remoteData.participants[0]||null; localStorage.setItem('bolao_me', currentParticipant||''); }
@@ -616,6 +618,11 @@ async function removeParticipant(name, e){
 
 // ── PALPITES ──────────────────────────────────────────────
 function setPalpite(name, gid, side, val){
+  // bloqueia se prazo encerrado
+  if(bloqueado()){ showToast('Os palpites já foram encerrados.', true); return; }
+  // bloqueia se não é o dono
+  const me = localStorage.getItem('bolao_me');
+  if(name !== me){ showToast('Você só pode editar seu próprio palpite.', true); return; }
   if(!remoteData.palpites[name]) remoteData.palpites[name]={};
   if(!remoteData.palpites[name][gid]) remoteData.palpites[name][gid]={};
   remoteData.palpites[name][gid][side] = val===''?null:parseInt(val);
@@ -659,10 +666,20 @@ function renderPalpites(){
     container.innerHTML=`<div class="empty-state"><h2>SELECIONE UM PARTICIPANTE</h2><p>Clique no nome de quem vai palpitar.</p></div>`; return;
   }
   const name = currentParticipant;
+  const meParticipant = localStorage.getItem('bolao_me') || null;
+  const isOwner = (name === meParticipant);
+  const locked = bloqueado();
+  const canEdit = isOwner && !locked;
   const done = GAMES.filter(g=>{ const p=remoteData.palpites[name]?.[g.id]; return p?.h!=null&&p?.a!=null; }).length;
   const pct = Math.round(done/GAMES.length*100);
 
-  let html = `<div style="margin-bottom:22px">
+  // notice shown when viewing someone else (shouldn't happen here) or locked
+  const otherViewNotice = `<div style="background:rgba(122,138,160,.1);border:1px solid rgba(122,138,160,.25);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted)">👁️ Você está vendo os palpites de <strong style="color:${col(name)}">${name}</strong> — apenas leitura</div>`;
+  const noticeHtml = locked
+    ? `<div style="background:rgba(224,49,49,.12);border:1px solid rgba(224,49,49,.3);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#ff8888">🔒 Prazo encerrado — palpites somente leitura</div>`
+    : (!isOwner ? otherViewNotice : '');
+
+  let html = `${noticeHtml}<div style="margin-bottom:22px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px">
         PALPITES DE <strong style="color:${col(name)}">${name.toUpperCase()}</strong>
@@ -695,12 +712,12 @@ function renderPalpites(){
           <div class="vs-label">Palpite</div>
           <div class="score-inputs">
             <input class="score-input${hv!==''?' filled':''}" id="pi-${game.id}-h" type="number" min="0" max="20" value="${hv}" placeholder="–"
-              oninput="setPalpite('${name}','${game.id}','h',this.value)">
+              ${!canEdit?'disabled':''} oninput="setPalpite('${name}','${game.id}','h',this.value)">
             <span class="score-sep">×</span>
             <input class="score-input${av!==''?' filled':''}" id="pi-${game.id}-a" type="number" min="0" max="20" value="${av}" placeholder="–"
-              oninput="setPalpite('${name}','${game.id}','a',this.value)">
+              ${!canEdit?'disabled':''} oninput="setPalpite('${name}','${game.id}','a',this.value)">
           </div>
-          <button class="save-game-btn" id="sbtn-${game.id}" onclick="savePalpiteGame('${game.id}')">💾 Salvar palpite</button>
+          <button class="save-game-btn" id="sbtn-${game.id}" ${!canEdit?'disabled style="opacity:.4;cursor:not-allowed"':''} onclick="savePalpiteGame('${game.id}')">💾 Salvar palpite</button>
         </div>
         <div class="team-block">
           <div class="team-flag">${game.away.f}</div>
@@ -862,6 +879,7 @@ function showToast(msg, isErr=false){
 
 // ── INIT ──────────────────────────────────────────────────
 (async function init(){
+  if(isAdmin) document.body.classList.add('is-admin');
   renderAviso();
   if(isAdmin){
     const admTab = document.getElementById('adminTab');
