@@ -449,7 +449,7 @@ function col(n){ let h=0; for(let c of n) h=(h*31+c.charCodeAt(0))&0xffff; retur
 let apiKey = HARDCODED_API_KEY || localStorage.getItem('bolao_apikey') || '';
 let binId  = HARDCODED_BIN_ID  || localStorage.getItem('bolao_binid')  || '';
 let currentParticipant = localStorage.getItem('bolao_me') || null;
-let remoteData = { participants:[], palpites:{}, results:{} };
+let remoteData = { participants:[], palpites:{}, results:{}, pagamentos:{} };
 let syncing = false;
 
 const ADMIN_PASSWORD = 'BolaoFamilia2026';
@@ -513,7 +513,7 @@ async function conectar(){
   try{
     if(!binId){
       // Criar bin novo
-      const data = { participants:[], palpites:{}, results:{} };
+      const data = { participants:[], palpites:{}, results:{}, pagamentos:{} };
       binId = await createBin(data);
       localStorage.setItem('bolao_binid', binId);
       remoteData = data;
@@ -545,6 +545,7 @@ async function syncData(manual=false){
   setSyncLoading();
   try{
     remoteData = await readBin();
+    if(!remoteData.pagamentos) remoteData.pagamentos = {};
     setSyncOk();
     renderAll();
     if(manual) showToast('Atualizado! ✓');
@@ -802,6 +803,16 @@ function renderResultados(){
   container.innerHTML = html;
 }
 
+// ── PAGAMENTOS ────────────────────────────────────────────
+async function togglePagamento(name){
+  if(!isAdmin){ showToast('Só o admin pode marcar pagamentos.', true); return; }
+  if(!remoteData.pagamentos) remoteData.pagamentos = {};
+  remoteData.pagamentos[name] = !remoteData.pagamentos[name];
+  await pushData();
+  renderPlacar();
+  showToast(remoteData.pagamentos[name] ? `${name} marcado como pago ✅` : `${name} desmarcado`);
+}
+
 // ── SCORING ───────────────────────────────────────────────
 function outcome(h,a){ return h>a?'H':a>h?'A':'E'; }
 
@@ -840,9 +851,13 @@ function renderPlacar(){
     <div class="ranking-row hdr"><span>#</span><span>PARTICIPANTE</span><span style="text-align:center">EXATOS</span><span style="text-align:center">RESULT.</span><span style="text-align:center">PONTOS</span></div>`;
 
   scores.forEach((s,i) => {
+    const pago = remoteData.pagamentos?.[s.name];
+    const pagoBadge = isAdmin
+      ? `<button onclick="togglePagamento('${s.name}')" title="${pago?'Clique para desmarcar':'Clique para marcar como pago'}" style="background:none;border:none;cursor:pointer;font-size:18px;padding:0;line-height:1;margin-left:6px;opacity:${pago?1:0.3}" aria-label="pagamento">${pago?'✅':'⬜'}</button>`
+      : `<span style="font-size:16px;margin-left:6px;opacity:${pago?1:0.35}" title="${pago?'Pago':'Pendente'}">${pago?'✅':'⬜'}</span>`;
     html += `<div class="ranking-row" style="${i===0?'background:rgba(245,197,24,.05)':''}">
       <div class="rank-pos">${medals[i]||(i+1)}</div>
-      <div class="rank-name"><div class="rank-avatar" style="background:${col(s.name)}">${ini(s.name)}</div>${s.name}</div>
+      <div class="rank-name"><div class="rank-avatar" style="background:${col(s.name)}">${ini(s.name)}</div>${s.name}${pagoBadge}</div>
       <div class="rank-stat">${s.ex}<span class="pts-label">exatos</span></div>
       <div class="rank-stat">${s.cr}<span class="pts-label">result.</span></div>
       <div class="rank-pts">${s.pts}<span class="pts-label">pts</span></div>
