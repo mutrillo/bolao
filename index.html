@@ -814,7 +814,7 @@ async function togglePagamento(name){
 }
 
 // ── SCORING ───────────────────────────────────────────────
-function outcome(h,a){ return h>a?'H':a>h?'A':'E'; }
+function outcome(h,a){ h=parseInt(h); a=parseInt(a); return h>a?'H':a>h?'A':'E'; }
 
 function calcScore(name){
   let pts=0, ex=0, cr=0;
@@ -830,7 +830,7 @@ function calcScore(name){
       cr++;
     }
 
-    if(pal.h===res.h && pal.a===res.a){
+    if(parseInt(pal.h)===parseInt(res.h) && parseInt(pal.a)===parseInt(res.a)){
       pts += 3;
       ex++;
     }
