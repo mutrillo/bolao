@@ -852,9 +852,9 @@ function renderPlacar(){
 
   let rankPos = 0;
   scores.forEach((s,i) => {
-    // Calcula posição real considerando empates (mesma pts, ex e cr = mesma posição)
+    // Ranking denso: posição avança +1 a cada grupo diferente, sem pular números
     if(i===0 || s.pts!==scores[i-1].pts || s.ex!==scores[i-1].ex || s.cr!==scores[i-1].cr){
-      rankPos = i + 1;
+      rankPos++;
     }
     const pago = remoteData.pagamentos?.[s.name];
     const pagoBadge = isAdmin
