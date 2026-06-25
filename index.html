@@ -850,13 +850,18 @@ function renderPlacar(){
     <div class="ranking-header">🏅 CLASSIFICAÇÃO GERAL</div>
     <div class="ranking-row hdr"><span>#</span><span>PARTICIPANTE</span><span style="text-align:center">EXATOS</span><span style="text-align:center">RESULT.</span><span style="text-align:center">PONTOS</span></div>`;
 
+  let rankPos = 0;
   scores.forEach((s,i) => {
+    // Calcula posição real considerando empates (mesma pts, ex e cr = mesma posição)
+    if(i===0 || s.pts!==scores[i-1].pts || s.ex!==scores[i-1].ex || s.cr!==scores[i-1].cr){
+      rankPos = i + 1;
+    }
     const pago = remoteData.pagamentos?.[s.name];
     const pagoBadge = isAdmin
       ? `<button onclick="togglePagamento('${s.name}')" title="${pago?'Clique para desmarcar':'Clique para marcar como pago'}" style="background:none;border:none;cursor:pointer;font-size:18px;padding:0;line-height:1;margin-left:6px;opacity:${pago?1:0.3}" aria-label="pagamento">${pago?'✅':'⬜'}</button>`
       : `<span style="font-size:16px;margin-left:6px;opacity:${pago?1:0.35}" title="${pago?'Pago':'Pendente'}">${pago?'✅':'⬜'}</span>`;
-    html += `<div class="ranking-row" style="${i===0?'background:rgba(245,197,24,.05)':''}">
-      <div class="rank-pos">${medals[i]||(i+1)}</div>
+    html += `<div class="ranking-row" style="${rankPos===1?'background:rgba(245,197,24,.05)':''}">
+      <div class="rank-pos">${medals[rankPos-1]||(rankPos+'º')}</div>
       <div class="rank-name"><div class="rank-avatar" style="background:${col(s.name)}">${ini(s.name)}</div>${s.name}${pagoBadge}</div>
       <div class="rank-stat">${s.ex}<span class="pts-label">exatos</span></div>
       <div class="rank-stat">${s.cr}<span class="pts-label">result.</span></div>
